@@ -28,16 +28,19 @@ public class GuideViewPaperAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        //删除当前页卡
         ((ViewPager) container).removeView(views.get(position));
     }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
+        //官方提示这样写判断是否由对象生成view
         return view == ((View) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        //实例化页卡，添加一个页卡
         ((ViewPager) container).addView(views.get(position), 0);
         return views.get(position);
     }

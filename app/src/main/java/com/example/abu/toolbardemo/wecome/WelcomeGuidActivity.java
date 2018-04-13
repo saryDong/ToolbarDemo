@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -30,7 +32,7 @@ public class WelcomeGuidActivity extends AppCompatActivity implements View.OnCli
     //开始体验按钮
     private Button mstartBtn;
 
-    //引导页图片资源
+    //引导页view资源
     private static final int[] pics={R.layout.guide_view1,R.layout.guide_view2,R.layout.guide_view3};
     //引导页图片底部小圆点
     private  ImageView[] dots;
@@ -40,6 +42,7 @@ public class WelcomeGuidActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setExitTransition(new Slide(Gravity.RIGHT).setDuration(2000));
         getSupportActionBar().hide();
         mGuideBinding= DataBindingUtil.setContentView(this,R.layout.activity_guide);
 

@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
@@ -24,6 +27,13 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
+/**
+ * app启动的第一个活动，此活动有以下功能
+ * 1.从SharedPreferences文件获取是否第一次打开的信息
+ * 2.判断是否第一次打开是第一次打开则进入功能引导页
+ * 3.若不是则加载当前界面并以观察者模式执行显示动画，动画结束时进入主界面并销毁当前活动，
+ *    进入当前活动后屏蔽物理返回键避免退出
+ */
 public class WelcomeActivity extends AppCompatActivity {
     ActivityWelcomeBinding mBinding;
     private static final int ANIM_TIME=2000;
@@ -80,11 +90,11 @@ public class WelcomeActivity extends AppCompatActivity {
         AnimatorSet set=new AnimatorSet();
         set.setDuration(ANIM_TIME).play(animatorX).with(animatorY);
         set.start();
-
+        //当动画结束时进入主界面并销毁当前活动
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, MainActivity.class), ActivityOptions.makeSceneTransitionAnimation(WelcomeActivity.this).toBundle());
                 WelcomeActivity.this.finish();
             }
         });
